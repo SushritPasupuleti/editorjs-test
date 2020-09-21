@@ -1,40 +1,66 @@
-<div class="ce-example">
-    <div class="ce-example__header">
-      <a class="ce-example__header-logo" href="https://codex.so/editor">Editor.js 🤩🧦🤨</a>
+<!--
+  Example playground for guide series learning hot to crate a Block Tool for Editor.js
+  https://editorjs.io/creating-a-block-tool
+-->
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+        font-size: 14px;
+        line-height: 1.5em;
+    }
+</style>
 
-      <div class="ce-example__header-menu">
-        <a href="https://github.com/editor-js" target="_blank">Plugins</a>
-        <a href="https://editorjs.io/usage" target="_blank">Usage</a>
-        <a href="https://editorjs.io/configuration" target="_blank">Configuration</a>
-        <a href="https://editorjs.io/creating-a-block-tool" target="_blank">API</a>
-      </div>
-    </div>
-    <div class="ce-example__content _ce-example__content--small">
-      <div id="editorjs"></div>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="js/main.js"></script>
+<link href="css/main.css" rel="stylesheet"/>
 
-      <div class="ce-example__button" id="saveButton">
-        editor.save()
-      </div>
-    </div>
-    <div class="ce-example__output">
-      <pre class="ce-example__output-content" id="output"></pre>
+<div id="editorjs" style="max-width: 1000px; margin: 0 auto"></div>
 
-      <div class="ce-example__output-footer">
-        <a href="https://codex.so" style="font-weight: bold;">Made by CodeX</a>
-      </div>
-    </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script><!-- Header -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/simple-image@latest"></script><!-- Image -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script><!-- Delimiter -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script><!-- List -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script><!-- Checklist -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script><!-- Quote -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script><!-- Code -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script><!-- Embed -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script><!-- Table -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script><!-- Link -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/warning@latest"></script><!-- Warning -->
+<button id="save-button">Save</button>
+<pre id="output"></pre>
 
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script><!-- Marker -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script><!-- Inline Code -->
+<script>
+  /**
+   * Initialize the Editor
+   */
+  const editor = new EditorJS({
+    autofocus: true,
+    tools: {
+      image: {
+        class: SimpleImage,
+        inlineToolbar: true,
+        config: {
+          placeholder: 'Paste image URL'
+        }
+      }
+    },
+    data: {
+      time: 1552744582955,
+      blocks: [
+        {
+          type: "image",
+          data: {
+            url: "https://cdn.pixabay.com/photo/2017/09/01/21/53/blue-2705642_1280.jpg",
+            caption: 'Here is a caption field',
+            withBorder: false,
+            withBackground: false,
+            stretched: false
+          }
+        }
+      ],
+      version: "2.11.10"
+    }
+  });
+
+  /**
+   * Add handler for the Save button
+   */
+  const saveButton = document.getElementById('save-button');
+  const output = document.getElementById('output');
+
+  saveButton.addEventListener('click', () => {
+    editor.save().then( savedData => {
+      output.innerHTML = JSON.stringify(savedData, null, 4);
+    })
+  })
+</script>
